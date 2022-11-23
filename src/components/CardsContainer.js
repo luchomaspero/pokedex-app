@@ -6,6 +6,9 @@ import './CardsContainer.css'
 
 
 export default function CardsContainer(){
+    // dato no menor: este componente triggerea mas llamadas
+    // y tiene un Loader propio, seguramente por eso aparecen dos
+    // superpuestos, fijate si lo descomentas que va a volver a pasar
     const {data, error, loading} = useDebouncedFetch(pokeapi.searchPokemons)
     return (
         <>
@@ -22,6 +25,9 @@ export default function CardsContainer(){
                 ))
             }
         </div>
+        {/* aca probablemente tengas el mismo problema del error
+        porque es un objeto, no un string (si es un string ta todo bien)
+        */}
         {error && <div>{error}</div>}
         </>
     )

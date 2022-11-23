@@ -54,7 +54,12 @@ function App() {
             <Switch>
               <Route path="/" exact>
                 <SearchPokemon/>
-                <CardsContainer/>
+                {/* esto no es necesario tenerlo comentado,
+                pero lo que se rompe es SearchPokemon asi que yo lo
+                mantendria comentado hasta debuggear que mierda le pasa
+                a SearchPokemon y arreglarlo
+                */}
+                {/* <CardsContainer/> */}
               </Route>
               <Route path="/:name">
                 <Pokemon/>

@@ -18,11 +18,25 @@ const fetchReducer = (state, action) => {
   }
 };
 
+// esto esta andando bien por lo que vi, o sea cumple su objetivo,
+// pero estaria bueno saber
+// por que se hacen 4 llamadas ni bien renderiza SearchPokemon
+// es posible que haya algo aca adentro del useEffect que este causando eso
+
+// te recomiendo probar usando busquedas erroneas y exitosas para ver como se comporta el cache
+
+// tambien fijate que dentro del cache se guardan dos respuestas con distinta estructura
+// como dice en SearchPokemon en uno de los comments, entonces dentro del state
+// hay cosas con diferente forma, y en particular yo vi que hay un "undefined" ahi
+// probablemente generado por las busquedas vacias, o por la data en null
+
 export function useDebouncedFetch(fetchResource, param, timeout) {
   const cache = useContext(CacheContext);
   const [state, dispatch] = useReducer(fetchReducer, initialState);
   useEffect(() => {
     if (cache.state[param]) {
+      // esto se puede borrar, es para que puedas ver el cache cada vez que cambia
+      console.log(cache.state, "cache")
       dispatch({ type: 'SUCCESS', payload: cache.state[param] });
       return;
     }

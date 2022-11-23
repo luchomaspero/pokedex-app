@@ -1,7 +1,7 @@
 import './SearchPokemon.css'
 import pokeapi from '../pokeapi';
 import Loader from './small-components/Loader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { useDebouncedFetch } from '../hooks/useFetchWithCache';
 import { NavLink } from 'react-router-dom';
@@ -40,7 +40,11 @@ const Image = styled.img`
 
 const SearchPokemon = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { data, error, loading } = useDebouncedFetch(pokeapi.getPokemonByName, searchTerm, 500);
+  const { data, error, loading } = useDebouncedFetch(pokeapi.getPokemonByName, searchTerm, 1000);
+
+  // esto se puede borrar, es para que puedas ver la data cada vez que cambia
+  // fijate que es null un par de veces antes de cargar
+  useEffect(() => console.log(data, "pokedex data"), [data]);
 
   return (
     <>
@@ -50,7 +54,12 @@ const SearchPokemon = () => {
     {loading && <Loader/>}
     {data && (
       <ResultList>
-        {data.results.map((result) => (
+        {/* esto falla porque si miras en la consola, cuando no buscaste nada
+        se hace una llamada vacia que devuelve una respuesta con otra estructura:
+        esa estructura tiene un results adentro, pero cuando buscas el nombre de un pokemon
+        fijate que no se muestra nada porque data.results va a evaluar a falsy
+        */}
+        {data.results && data.results.map((result) => (
           <ResultListItem key={result.id}>
             <NavLink to={`/${result.name}`}>
               <ResultItem>
@@ -62,8 +71,11 @@ const SearchPokemon = () => {
         ))}
       </ResultList>
     )}
-    
-    {error && <div>{error}</div>}
+    {/* cuando triggereabas cualquier request erronea antes esto tiraba un error
+    del tipo: no podes usar un objeto para renderear, necesito un react component
+    y bueno, error es un objeto que adentro tiene algunas cosas, entre ellas message
+    */}
+    {error && <div>{error.message}</div>}
     </>
   )
 }
