@@ -54,7 +54,7 @@ function App() {
             <Switch>
               <Route path="/" exact>
                 <SearchPokemon/>
-                <CardsContainer/>
+                {/* <CardsContainer/> */}
               </Route>
               <Route path="/:name">
                 <Pokemon/>

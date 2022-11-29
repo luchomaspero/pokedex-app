@@ -23,6 +23,8 @@ export function useDebouncedFetch(fetchResource, param, timeout) {
   const [state, dispatch] = useReducer(fetchReducer, initialState);
   useEffect(() => {
     if (cache.state[param]) {
+      // esto se puede borrar, es para que puedas ver el cache cada vez que cambia
+      // console.log(cache.state, "cache")
       dispatch({ type: 'SUCCESS', payload: cache.state[param] });
       return;
     }

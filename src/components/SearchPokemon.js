@@ -1,10 +1,12 @@
 import './SearchPokemon.css'
 import pokeapi from '../pokeapi';
 import Loader from './small-components/Loader';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import { useDebouncedFetch } from '../hooks/useFetchWithCache';
 import { NavLink } from 'react-router-dom';
+import Card from './Card'
+
 
 
 const SearchInput = styled.input`
@@ -27,11 +29,18 @@ const ResultListItem = styled.li`
   width: 30%;
 `;
 const ResultItem = styled.div`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+display: flex;
+align-items: center;
+justify-content: center;
+border: 2px solid rgb(80, 80, 80);
+background-color: #313131;
+color: white;
+text-decoration: none;
+font-size: 1.35rem;
+/* padding: .15rem; */
+border-radius: 8px;
+cursor: pointer;
+height: 100px;
 `;
 const Image = styled.img`
   margin-top: 1em;
@@ -40,30 +49,34 @@ const Image = styled.img`
 
 const SearchPokemon = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { data, error, loading } = useDebouncedFetch(pokeapi.getPokemonByName, searchTerm, 500);
+  const { data, error, loading } = useDebouncedFetch(pokeapi.getPokemonById, searchTerm, 1000);
+  
+  
+  // esto se puede borrar, es para que puedas ver la data cada vez que cambia
+  // fijate que es null un par de veces antes de cargar
+  useEffect(() => console.log(data, "pokedex data"), [data]);
 
   return (
     <>
-    <SearchInput onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm} className='textInput' placeholder='Search a Pokemon!'>
-    </SearchInput>
+    <SearchInput onChange={(e) => setSearchTerm(e.target.value)} value={searchTerm} className='textInput' placeholder='Search a Pokemon!'></SearchInput>
     
     {loading && <Loader/>}
     {data && (
       <ResultList>
-        {data.results.map((result) => (
+        {data.results && data.results.map((result) => (
           <ResultListItem key={result.id}>
-            <NavLink to={`/${result.name}`}>
-              <ResultItem>
-                <div>{result.name}</div>
-                <Image src={result.front_default} alt={result.name}></Image>
-              </ResultItem>
+            <NavLink to={`/pokemon/${result.id}`}>
+                <Card 
+                pokemonName={result.name} 
+                key={result.url}
+                ></Card>
             </NavLink>
           </ResultListItem>
         ))}
       </ResultList>
     )}
     
-    {error && <div>{error}</div>}
+    {error && <div>{error.message}</div>}
     </>
   )
 }

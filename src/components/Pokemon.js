@@ -8,10 +8,11 @@ import {useDebouncedFetch} from '../hooks/useFetchWithCache'
 
 export default function Pokemon() {
   const { name } = useParams();
-  const { data, error, loading } = useDebouncedFetch(pokeapi.getPokemonByName, name);
+  const { data, error, loading } = useDebouncedFetch(pokeapi.getPokemonById, name);
+  console.log(data)
   console.log(name)
   if (loading) return <Loader />
-
+  
   if (error) return 'An error just occurred'
 
   if (data) return (

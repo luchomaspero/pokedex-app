@@ -7,7 +7,7 @@
     color: white;
     text-decoration: none;
     font-size: 1.35rem;
-    /* padding: .15rem; */
+    padding: .15rem;
     border-radius: 8px;
     cursor: pointer;
     height: 100px;
@@ -16,5 +16,5 @@
   .card:hover {
     background-color: #444444;
     box-shadow:
-    rgba(240, 46, 70, 0.7) 5px 5px;
+    rgba(130, 46, 240, 0.7) 5px 5px;
   }

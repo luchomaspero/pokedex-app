@@ -13,12 +13,11 @@ export default function CardsContainer(){
             {loading && <Loader></Loader>}
         </div>
         <div className='cards-container'>
-            {
-                data && data.results.map((pokemon) => (
-                    <Card 
-                    pokemonName={pokemon.name} 
-                    key={pokemon.url}
-                    ></Card>
+            {data && data.results.map((pokemon) => (
+                <Card 
+                pokemonName={pokemon.name} 
+                key={pokemon.url}
+                ></Card>
                 ))
             }
         </div>
